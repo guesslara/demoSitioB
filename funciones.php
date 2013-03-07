@@ -80,7 +80,6 @@
         }
     }
 
-
     function enviaCorreo($subject,$message,$destino){        
         $origen_nombre='Soporte';
         $origen_mail="soporte@iqelectronics.com.mx";
