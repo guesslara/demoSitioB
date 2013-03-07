@@ -20,12 +20,16 @@
                 include('class.smtp.inc');
                 $validar = new ValidEmail($email);
                 if($validar->validString()){	 // el email tiene caracteres validos                                                        
-		    //insercion en la base de datos
-                    $sql1="INSERT INTO regs_tic (nombre,mail,lada,telefono,modelo,mensaje) VALUES ('".$nombre."','".$email."','".$lada."','".$telefono."','".$modelo."','".$mensaje."')";//se guarda en la base de datos
+		    $sql1="INSERT INTO regs_tic (nombre,mail,lada,telefono,modelo,mensaje) VALUES ('".$nombre."','".$email."','".$lada."','".$telefono."','".$modelo."','".$mensaje."')";//se guarda en la base de datos
                     $res1=mysql_query($sql1,conectarBd());
+
+		    //insercion en la base de datos de tickets blusens
+		    $sqlT="INSERT INTO tickets (nombre,email,telefono,modelo,fallareportada) VALUES ('".$nombre."','".$email."','".$lada."-".$telefono."','".$modelo."','".$mensaje."')";
+		    $resT=mysql_query($sqlT,conectarBdTickets());
+
                     if($res1){
                         //se recupera el ultimo id insertado
-                        $ultimoId=mysql_query("select last_insert_id() AS ultimoId",conectarBd());
+                        $ultimoId=mysql_query("select last_insert_id() AS ultimoId",conectarBdTickets());
 			$rowUltimoId=mysql_fetch_array($ultimoId);
                         $sqlDatos="select * from regs_tic where id='".$rowUltimoId["ultimoId"]."'";//se extraen los datos
                         $resDatos=mysql_query($sqlDatos,conectarBd());
