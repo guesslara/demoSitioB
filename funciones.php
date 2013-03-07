@@ -20,34 +20,35 @@
                 include('class.smtp.inc');
                 $validar = new ValidEmail($email);
                 if($validar->validString()){	 // el email tiene caracteres validos                                                        
-		    $sql1="INSERT INTO regs_tic (nombre,mail,lada,telefono,modelo,mensaje) VALUES ('".$nombre."','".$email."','".$lada."','".$telefono."','".$modelo."','".$mensaje."')";//se guarda en la base de datos
-                    $res1=mysql_query($sql1,conectarBd());
+		    //$sql1="INSERT INTO regs_tic (nombre,mail,lada,telefono,modelo,mensaje) VALUES ('".$nombre."','".$email."','".$lada."','".$telefono."','".$modelo."','".$mensaje."')";//se guarda en la base de datos
+                    //$res1=mysql_query($sql1,conectarBd());
 
 		    //insercion en la base de datos de tickets blusens
 		    $sqlT="INSERT INTO tickets (nombre,email,telefono,modelo,fallareportada) VALUES ('".$nombre."','".$email."','".$lada."-".$telefono."','".$modelo."','".$mensaje."')";
 		    $resT=mysql_query($sqlT,conectarBdTickets());
 
-                    if($res1){
+                    if($resT){
                         //se recupera el ultimo id insertado
                         $ultimoId=mysql_query("select last_insert_id() AS ultimoId",conectarBdTickets());
 			$rowUltimoId=mysql_fetch_array($ultimoId);
-                        $sqlDatos="select * from regs_tic where id='".$rowUltimoId["ultimoId"]."'";//se extraen los datos
-                        $resDatos=mysql_query($sqlDatos,conectarBd());
+                        //$sqlDatos="select * from regs_tic where id='".$rowUltimoId["ultimoId"]."'";//se extraen los datos
+			$sqlDatos="select * from tickets where id='".$rowUltimoId["ultimoId"]."'";//se extraen los datos
+                        $resDatos=mysql_query($sqlDatos,conectarBdTickets());
                         if($resDatos){
                             $rowDatos=mysql_fetch_array($resDatos);                            
                             $ticket["datos"]["nroTicket"]=$rowDatos["id"];
                             $ticket["datos"]["nombreCliente"]=$rowDatos["nombre"];
-                            $ticket["datos"]["mailCliente"]=$rowDatos["mail"];
-                            $ticket["datos"]["lada"]=$rowDatos["lada"];
+                            $ticket["datos"]["mailCliente"]=$rowDatos["email"];
+                            //$ticket["datos"]["lada"]=$rowDatos["lada"];
                             $ticket["datos"]["telefono"]=$rowDatos["telefono"];
-                            $ticket["datos"]["mensaje"]=$rowDatos["mensaje"];
+                            $ticket["datos"]["mensaje"]=$rowDatos["fallareportada"];
                             $ticket["datos"]["modelo"]=$rowDatos["modelo"];
                             $subject="Soporte en linea Blusens ticket #".$ticket["datos"]["nroTicket"];                            
                             $message.='Se ha enviado un mensaje a Soporte en linea el '.date("d/m/y")." a las ".date("H:i")."<br><br>";
                             $message.='Numero de Ticket: #'.$ticket["datos"]["nroTicket"]."<br><br>";
 			    $message.='Nombre del Cliente: '.$ticket["datos"]["nombreCliente"]."<br><br>";
 			    $message.="Email: ".$ticket["datos"]["mailCliente"]."<br><br>";
-			    $message.="Telefono: +52 - ".$ticket["datos"]["lada"]." - ".$ticket["datos"]["telefono"]."<br><br>";
+			    $message.="Telefono: +52 - ".$ticket["datos"]["telefono"]."<br><br>";
 			    $message.="Modelo de Producto: ".$ticket["datos"]["modelo"]."<br><br>";
                             $message.="Comentarios: ".$ticket["datos"]["mensaje"]."<br><br>";
                             $message.="<strong><i>Los acentos fueron omitidos intencionalmente. Algunos caracteres especiales pueden cambiar su formato de visualizacion</i></strong><br><br>";
@@ -60,9 +61,9 @@
                             $message.='Numero de Ticket: #'.$ticket["datos"]["nroTicket"]."<br><br>";
                             $message.='Nombre del Cliente: '.$ticket["datos"]["nombreCliente"]."<br><br>";
                             $message.="Email: ".$ticket["datos"]["mailCliente"]."<br><br>";
-                            $message.="Telefono: +52 - ".$ticket["datos"]["lada"]." - ".$ticket["datos"]["telefono"]."<br><br>";
+                            $message.="Telefono: +52 - ".$ticket["datos"]["telefono"]."<br><br>";
                             $message.="Modelo de Producto: ".$ticket["datos"]["modelo"]."<br><br>";
-                            $message.="Comentarios: ".$ticket["datos"]["mensaje"]."<br><br>";
+                            $message.="Comentarios: ".$ticket["datos"]["fallareportada"]."<br><br>";
                             $message.="<strong>Los acentos fueron omitidos intencionalmente. Algunos caracteres especiales pueden cambiar su formato de visualizacion</strong><br><br>";
                             $subject="Seguimiento Soporte en Linea Blusens Ticket # ".$ticket["datos"]["nroTicket"];
                             enviaCorreo($subject,$message,$ticket["datos"]["mailCliente"]);
