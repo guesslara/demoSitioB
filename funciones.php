@@ -20,7 +20,7 @@
                 include('class.smtp.inc');
                 $validar = new ValidEmail($email);
                 if($validar->validString()){	 // el email tiene caracteres validos                                                        
-                    //print_r($_POST);//se continua con el guardado
+		    //insercion en la base de datos
                     $sql1="INSERT INTO regs_tic (nombre,mail,lada,telefono,modelo,mensaje) VALUES ('".$nombre."','".$email."','".$lada."','".$telefono."','".$modelo."','".$mensaje."')";//se guarda en la base de datos
                     $res1=mysql_query($sql1,conectarBd());
                     if($res1){
