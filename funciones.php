@@ -114,6 +114,16 @@
         }
     }
     
+    function conectarBdTickets(){
+	$link=mysql_connect("localhost","root","xampp");
+        if(!$link){
+            echo "Error al conectar al servidor";
+        }else{
+            mysql_select_db("iqe_blusens");
+        }
+        return $link;
+    }
+
     function conectarBd(){
         $link=mysql_connect("localhost","root","xampp");
         if(!$link){
@@ -123,69 +133,4 @@
         }
         return $link;
     }
-    
-/*
- *$message.='Estimado cliente se ha enviado su solicitud a Soporte en linea  Blusens, en breve un ejecutivo se pondra en contacto con usted por correo electronico o via telefonica,
-        el numero de soporte con el cual se registro en el sistema su solictud es el '.$rowDatos["id"].'.<br><br>Datos de la solicitud:<br><br>';
-        $message.='Numero de Ticket: #'.$rowDatos["id"]."<br><br>";
-        $message.='Nombre del Cliente: '.$rowDatos["nombre"]."<br><br>";
-        $message.="Email: ".$rowDatos["mail"]."<br><br>";
-        $message.="Telefono: +52 - ".$rowDatos["lada"]." - ".$rowDatos["telefono"]."<br><br>";
-        $message.="Modelo de Producto: ".$rowDatos["modelo"]."<br><br>";
-        $message.="Comentarios: ".$rowDatos["mensaje"]."<br><br>";
-        $message.="<strong>Los acentos fueron omitidos intencionalmente. Algunos caracteres especiales pueden cambiar su formato de visualizacion</strong><br><br>";
-*/    
-//se procede a enviar el correo electronico
-/*
-                                include('class.smtp.inc');
-                                $origen_nombre='Soporte';
-                                $origen_mail="soporte@iqelectronics.com.mx";
-                                $password_mail="123456";
-                                $subject="Soporte en linea Blusens ticket #".$rowUltimoId["ultimoId"];
-                                $fecha = date ("d F Y");                                        
-                                $params['host'] = 'mail.iqelectronics.com.mx';	// Cambiar por su nombre de dominio
-                                $params['port'] = 9025;			// The smtp server port
-                                $params['helo'] = 'mail.iqelectronics.com.mx';	// Cambiar por su nombre de dominio
-                                $params['auth'] = TRUE;			// Whether to use basic authentication or not
-                                $params['user'] = $origen_mail;	// Correo que utilizara para enviar los correos (no usar el de webmaster por seguridad)
-                                $params['pass'] = $password_mail;	// Password de la cta de correo. Necesaria para la autenticacion
-                                //$destino="glara@iqelectronics.net;uvelez@iqelectronics.net;sistemas@iqelectronics.com.mx;drjuarez@iqelectronics.com.mx;hgmontoya@iqelectronics.com.mx";//$_POST['emailprueba'];consejomexicanodeendodoncia@yahoo.com.mx
-                                $destino="glara@iqelectronics.net,uvelez@iqelectronics.net";//$_POST['emailprueba'];consejomexicanodeendodoncia@yahoo.com.mx
-				$message.='Se ha enviado un mensaje a Soporte en linea el '.date("d/m/y")." a las ".date("H:i")."<br><br>";
-                                $message.='Numero de Ticket: #'.$rowDatos["id"]."<br><br>";
-				$message.='Nombre del Cliente: '.$rowDatos["nombre"]."<br><br>";
-				$message.="Email: ".$rowDatos["mail"]."<br><br>";
-				$message.="Telefono: +52 - ".$rowDatos["lada"]." - ".$rowDatos["telefono"]."<br><br>";
-				$message.="Modelo de Producto: ".$rowDatos["modelo"]."<br><br>";
-                                $message.="Comentarios: ".$rowDatos["mensaje"]."<br><br>";
-                                $message.="<strong>Los acentos fueron omitidos intencionalmente. Algunos caracteres especiales pueden cambiar su formato de visualizacion</strong><br><br>";
-				$send_params['recipients'] = array("glara@iqelectronics.net"); // The recipients (can be multiple), separados por coma.
-				$send_params['headers']	   = array(
-								'Content-Type: text/html;',
-								'From: "'.$origen_nombre.'" <soporte@iqelectronics.com.mx>',	// Headers
-								//'To: '.$destino,
-								'To: '.$destino,
-								'Subject: '.$subject,
-								//'Disposition-Notification-To: contacto@odontologos.com.mx',
-								//'Disposition-Notification-To: '.$origen_mail,
-								//'Return-Receipt-To: '.$origen_mail,		
-								'Date: '.date(DATE_RFC822),
-								'X-Mailer: PHP/' . phpversion(),
-								'MIME-Version: 1.0',
-								//'Reply-To: '.$origen_mail'\r\n',
-                                                                'Return-Path: '.$origen_nombre.'" <sistema Interno TVO>',
-								'Envelope-To:'.$destino 
-							    );
-				$send_params['from']		= $origen_mail;	// This is used as in the MAIL FROM: cmd
-				$send_params['body']		= $message;	//Message							// The body of the email
-				if(is_object($smtp = smtp::connect($params)) AND $smtp->send($send_params)){
-                                    echo "Mensaje Enviado";
-                                    //si se envio el primer correo se envie un segundo correo pero esta ves al cliente
-  
-                                    
-  
-				}else {
-                                    echo " - NO se envio";                                    
-				}
-*/
 ?>
